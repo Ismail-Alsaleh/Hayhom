@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use libphonenumber\PhoneNumberType;
 
 class CreatePhoneRequest extends FormRequest
 {
@@ -36,7 +37,7 @@ class CreatePhoneRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone' => 'phone:AUTO,mobile|required',
+            'phone' => 'required|phone:AUTO,mobile,FIXED_LINE_OR_MOBILE',
         ];
     }
     public function messages()

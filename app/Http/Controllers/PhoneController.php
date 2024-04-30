@@ -20,6 +20,7 @@ class PhoneController extends Controller
         $phoneNumber = $request->input('phone');
         $parsedNumber = new PhoneNumber($phoneNumber);
         $countryInfo = $parsedNumber->getCountry();
+        
         MyPhone::create([
             'phone' => $request->input('phone'),
         ]);
