@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\PhoneController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +14,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PhoneController::class, 'index']);
+Route::post('/',[PhoneController::class, 'store'])->name('store');
+
