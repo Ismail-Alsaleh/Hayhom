@@ -1,13 +1,13 @@
 var validationMessages = {
     en: {
         required: "This field is required!",
-        minlength: "It must be More than 9 digits",
+        minlength: "It must be More than 7 digits",
         maxlength: "This Number is too long",
     },
     ar: {
         required: "هذا الحقل مطلوب.",
         minlength: "هذا الرقم قصير جدا",
-        maxlength: "يجب الا يتجاوز الجوال اكثر من 15 رقما"
+        maxlength: "هذا الرقم طويل جدا"
     },
 };
 var lang = document.querySelector("#lang").textContent;
@@ -24,9 +24,9 @@ $.validator.addMethod("regex", function(value, element, param) {
     } else {
         // Set custom error message
         if(lang=="en")
-            $.validator.messages.regex = "Enter Valid format. EX:+996547068000";
+            $.validator.messages.regex = "Enter Valid format. EX:547068000";
         else
-            $.validator.messages.regex = "ادخل صيغة صحيحة, مثال:966547068000+";
+            $.validator.messages.regex = "ادخل صيغة صحيحة, مثال: 547068000";
         return false; // Validation failed
     }
 }); 
@@ -37,20 +37,28 @@ $("#phoneForm").validate({
     rules: {
         phone: {
             required:true,
-            minlength: 9,
-            maxlength: 15,
-            regex: /^\+\d+$/,
+            minlength: 7,
+            maxlength: 20,
+            regex: /\d+$/,
         },
     
     },
     messages: {
         phone:validationMessages[lang],
     },
+    errorPlacement: function(error, element) {
+        let phoneErr = document.querySelector('.phoneErr');
+        error.insertBefore(phoneErr);
+    },
     submitHandler: function(){
         document.querySelector('.phoneErr').textContent= '';
         let myUrl= $('#phoneForm').attr('action');
         var phoneForm = document.getElementById('phoneForm');
         var myData = new FormData(phoneForm);
+
+        const phoneNumber = phoneInput.getNumber();
+        myData.append('phone',phoneNumber);
+        console.log(phoneNumber);
         $.ajax({
             url: myUrl,
             processData: false,
@@ -74,6 +82,7 @@ $("#phoneForm").validate({
                     //     position: 'topRight'
                     // });
                 } else {
+
                     document.querySelector('.phoneCountry').textContent= response.country;
                     iziToast.success({
                         message: response.success,

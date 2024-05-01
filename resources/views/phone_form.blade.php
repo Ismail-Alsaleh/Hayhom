@@ -14,10 +14,13 @@
                         <div class="">
                             <label for="phone">{{ __('phone_form.phone_number') }}</label>
                         </div>
-                        <input type="text" class="py-2 w-100 border-0"  id="phone" name="phone" placeholder="{{ __('phone_form.insert_phone') }}" >
+                        <input type="tel" class="py-2 w-100 border-0 "  id="phone" name="phone" placeholder="{{ __('phone_form.insert_phone') }}" >
                     </div>
-                    <p class="phoneErr text-danger"></p>
-                    <p class="phoneCountry text-success"></p>
+                    <div class="">
+                        <p class="phoneErr text-danger"></p>
+                        <p class="phoneCountry text-success"></p>                        
+                    </div>
+
                     <!-- <h5 id="phoneValidate" style="color: red;"> **phone is not correct </h5>  -->
                     <button id="submitButton" class="w-100 border-0 bg-light-red fs-3 p-2 mt-4 text-white">{{ __('messages.insert') }}</button>
                 </form>

@@ -9,9 +9,19 @@
             <li class="text-light ms-3 mx-3"><a class="" href="https://instagram.com/hayhomapp"><i class="bi bi-instagram text-light fs-4 display-4"></i></a></li>
             </ul>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.7/build/js/intlTelInput.min.js"></script>
+        <script>
+            const input = document.querySelector("#phone");
+            const phoneInput = window.intlTelInput(input, {
+                utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.7/build/js/utils.js",
+            });
+        </script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
         <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
         <script src="{{asset('js/bootstrap.min.js')}}"></script>
         <script src="{{asset('js/phone.js')}}"></script>
+
+
+
     </body> 
 </html>
