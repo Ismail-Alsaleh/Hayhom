@@ -5,20 +5,22 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePhoneRequest;
 use App\Models\MyPhone;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 use Propaganistas\LaravelPhone\PhoneNumber;
 use Propaganistas\LaravelPhone\Validation\Phone;
 
 class PhoneController extends Controller
 {
-
-    public function index($locale)
-    {
+    public function index()
+    {       
         return view('phone_form');
-        App::setLocale($locale);
+
     }
 
     public function store(CreatePhoneRequest $request)
     {
+        
         $phoneNumber = $request->input('phone');
         $parsedNumber = new PhoneNumber($phoneNumber);
         $countryInfo = $parsedNumber->getCountry();
@@ -26,6 +28,6 @@ class PhoneController extends Controller
         MyPhone::create([
             'phone' => $request->input('phone'),
         ]);
-        return response()->json(['success'=> 'Phone number saved successfully.', 'country'=> __('phone_form.valid_phone') . $countryInfo]);
+        return response()->json(['success'=> __('phone_form.success_phone'), 'country'=> __('phone_form.valid_phone') . $countryInfo]);
     }
 }

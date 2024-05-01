@@ -36,7 +36,7 @@ $("#phoneForm").on('submit',function(event){
 $("#phoneForm").validate({
     rules: {
         phone: {
-            required:true,
+            required:false,
             minlength: 7,
             maxlength: 20,
             regex: /\d+$/,

@@ -26,7 +26,7 @@
   .iti {
     position: relative;
     display: inline-block;
-    width: 100%;
+    width: 50%;
   }
   .iti * {
     box-sizing: border-box;
