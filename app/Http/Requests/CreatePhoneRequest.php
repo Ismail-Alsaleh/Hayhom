@@ -40,10 +40,10 @@ class CreatePhoneRequest extends FormRequest
             'phone' => 'required|phone:AUTO,mobile,FIXED_LINE_OR_MOBILE',
         ];
     }
-    public function messages()
-    {
-        return [
-            'phone.required' => 'ENTER A PHONE NUMBER',
-        ];
-    }
+    // public function messages()
+    // {
+    //     return [
+    //         'phone.required' => 'ENTER A PHONE NUMBER',
+    //     ];
+    // }
 }

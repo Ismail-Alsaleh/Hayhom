@@ -1,3 +1,19 @@
+var validationMessages = {
+    en: {
+        required: "This field is required!",
+        minlength: "It must be More than 9 digits",
+        maxlength: "This Number is too long",
+    },
+    ar: {
+        required: "هذا الحقل مطلوب.",
+        minlength: "هذا الرقم قصير جدا",
+        maxlength: "يجب الا يتجاوز الجوال اكثر من 15 رقما"
+    },
+};
+var lang = document.querySelector("#lang").textContent;
+
+
+
 $('#phone').on('keyup',function () {
     document.querySelector('.phoneErr').textContent='';
     document.querySelector('.phoneCountry').textContent='';
@@ -7,7 +23,10 @@ $.validator.addMethod("regex", function(value, element, param) {
         return true; // Validation passed
     } else {
         // Set custom error message
-        $.validator.messages.regex = "Enter Valid format. EX:+996547068000";
+        if(lang=="en")
+            $.validator.messages.regex = "Enter Valid format. EX:+996547068000";
+        else
+            $.validator.messages.regex = "ادخل صيغة صحيحة, مثال:966547068000+";
         return false; // Validation failed
     }
 }); 
@@ -25,12 +44,7 @@ $("#phoneForm").validate({
     
     },
     messages: {
-        phone:{
-            required: "This field is required!",
-            // number: "Letters Are not allowed",
-            minlength: "It must be More than 9 digits",
-            maxlength: "This Number is too long",
-        },
+        phone:validationMessages[lang],
     },
     submitHandler: function(){
         document.querySelector('.phoneErr').textContent= '';

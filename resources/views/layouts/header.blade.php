@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" class="{{app()->islocale('ar')? 'rtl':'ltr'}}">
     <head>
         <link rel="stylesheet" href="{{asset('css/app.css')}}">
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
@@ -26,16 +26,16 @@
             <div class="container-fluid">
                 <a class="navbar-brand fs-2" href="#"><img src="{{asset('images/hayhomWhite.png')}}" alt="Hayhom" style="width: 30px; height: 47px;"></a>
                 <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav mr-auto fs-3">
+                    <ul class="navbar-nav {{ app()->islocale('en')? 'mr-auto':'ml-auto' }} fs-3">
                         <li class="nav-item  px-4"><a class="nav-link text-white" href="#">{{ __('messages.home') }}</a></li>
                         <li class="nav-item px-4"><a class="nav-link text-white" href="#">{{ __('messages.contact') }}</a></li>
                         <li class="nav-item px-4"><a class="nav-link text-white" href="#">{{ __('messages.about') }}</a></li>
                     </ul>
                 </div>
                     <ul class="navbar-nav mr-auto fs-3">
-                        <li class="nav-item"><a class="nav-link text-white" href="#">{{ __('messages.login') }} <i class="bi bi-door-closed-fill"></i></a></li>
                         <li class="nav-item"><a class="nav-link text-white mx-3" id="ar" href="{{ route('lang.switch', ['locale' => 'ar']) }}">العربية</a></li>
                         <li class="nav-item"><a class="nav-link text-white mx-3" id="en" href="{{ route('lang.switch', ['locale' => 'en']) }}">English</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="#">{{ __('messages.login') }} <i class="bi bi-door-closed-fill"></i></a></li>
                     </ul>
             </div>
         </nav>

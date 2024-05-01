@@ -26,6 +26,6 @@ class PhoneController extends Controller
         MyPhone::create([
             'phone' => $request->input('phone'),
         ]);
-        return response()->json(['success'=> 'Phone number saved successfully.', 'country'=>'This Mobile-Number is valid in '.$countryInfo]);
+        return response()->json(['success'=> 'Phone number saved successfully.', 'country'=> __('phone_form.valid_phone') . $countryInfo]);
     }
 }

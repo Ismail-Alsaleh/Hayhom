@@ -24,6 +24,7 @@ return [
     'array' => 'يجب أن يكون الحقل :attribute ًمصفوفة',
     'before' => 'يجب على الحقل :attribute أن يكون تاريخًا سابقًا للتاريخ :date.',
     'before_or_equal' => 'الحقل :attribute يجب أن يكون تاريخا سابقا أو مطابقا للتاريخ :date',
+    'phone' => 'يجب :attribute ان يكون رقما صحيحا',
     'between' => [
         'array' => 'يجب أن يحتوي :attribute على عدد من العناصر بين :min و :max',
         'file' => 'يجب أن يكون حجم الملف :attribute بين :min و :max كيلوبايت.',
