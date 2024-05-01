@@ -1,6 +1,6 @@
 <footer class="d-flex flex-wrap justify-content-between bg-dark-red align-items-center py-4 ">
             <div class="col-md-4 d-flex align-items-center">
-            <p class="text-light mx-3">© 2019 Company, Inc</p>
+            <p class="text-light mx-3">{{ __('messages.license') }}</p>
             </div>
 
             <ul class="nav col-md-4 justify-content-end list-unstyled d-flex mx-3">

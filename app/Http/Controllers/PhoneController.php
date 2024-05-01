@@ -10,9 +10,11 @@ use Propaganistas\LaravelPhone\Validation\Phone;
 
 class PhoneController extends Controller
 {
-    public function index()
+
+    public function index($locale)
     {
         return view('phone_form');
+        App::setLocale($locale);
     }
 
     public function store(CreatePhoneRequest $request)
