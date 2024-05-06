@@ -25,6 +25,16 @@
                     <button id="submitButton" class="w-100 border-0 bg-light-red fs-3 p-2 mt-4 text-white">{{ __('messages.insert') }}</button>
                 </form>
                 <p class="d-none" id="lang">{{app()->getlocale()}}</p>
+                <script>
+                    const input = document.querySelector("#phone");
+                    const phoneInput = window.intlTelInput(input, {
+                        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@21.2.7/build/js/utils.js",
+                    });
+                </script>
             </div>
         </div>
 @endsection
+
+@push('js_file')
+    <script src="{{asset('js/phone.js')}}"></script>
+@endpush

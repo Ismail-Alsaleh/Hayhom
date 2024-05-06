@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PhoneController;
+use App\Http\Controllers\UploadImageController;
 use App\Http\Middleware\Localization;
+
 
 
 
@@ -20,7 +22,16 @@ use App\Http\Middleware\Localization;
 
 Route::get('/', [PhoneController::class, 'index'])->name('name');
 Route::post('/',[PhoneController::class, 'store'])->name('store');
+Route::get('/image', function(){
+    return view('image_upload');
+});
+Route::post('/image',[UploadImageController::class, 'uploadImage'])->name('uploadImage');
+Route::get('/gallery', [UploadImageController::class, 'showImages'])->name('showImages');
+Route::get('/gallery/{id}', [UploadImageController::class, 'imageDetails'])->name('image-details');
 Route::middleware([Localization::class])->group(function () {
     Route::get('/language/{locale}', [LanguageController::class, 'switchLocale'])->name('lang.switch');
+});
+route::get('/test', function(){
+    return view('test');
 });
 

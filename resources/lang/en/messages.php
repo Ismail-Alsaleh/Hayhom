@@ -8,5 +8,6 @@ return [
     'insert' =>             'Insert',
     'license'=>             'All copyrights reserved | Hayohom © 2024',
     'language'=>            'العربية',
-
+    'image' =>              'Image',
+    'upload'=>              'Upload',
 ];

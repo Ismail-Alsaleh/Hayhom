@@ -5,11 +5,12 @@
         <link rel="stylesheet" href="{{asset('css/bootstrap.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/fontawesome.min.css')}}">
         <link rel="stylesheet" href="{{asset('css/public.css')}}">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
         <link rel="stylesheet" href="{{ asset('css/intlTelInput.css') }}">
-
+        <link href="{{asset('css/filepond.css')}}" rel="stylesheet">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <style>
             .error{
                 color: red !important;
@@ -30,6 +31,8 @@
                         <li class="nav-item  px-4"><a class="nav-link text-white" href="#">{{ __('messages.home') }}</a></li>
                         <li class="nav-item px-4"><a class="nav-link text-white" href="#">{{ __('messages.contact') }}</a></li>
                         <li class="nav-item px-4"><a class="nav-link text-white" href="#">{{ __('messages.about') }}</a></li>
+                        <li class="nav-item px-4"><a class="nav-link text-white" href="{{ route('uploadImage') }}">{{__('image_upload.upload_image')}}</a></li>
+                        <li class="nav-item px-4"><a class="nav-link text-white" href="{{ route('showImages') }}">{{__('image_upload.gallery')}}</a></li>
                     </ul>
                 </div>
                     <ul class="navbar-nav mr-auto fs-3">
@@ -39,18 +42,3 @@
                     </ul>
             </div>
         </nav>
-        <!-- <script>
-            $(document).ready(function() {
-                $('#en').click(function(e) {
-                    e.preventDefault();
-                    var locale = 'en'; // Change the locale as needed
-                    $.ajax({
-                        type: 'GET',
-                        url: '/' + locale,
-                        success: function() {
-                            location.reload(); // Reload the page to reflect the language change
-                        }
-                    });
-                });
-            });
-        </script> -->
