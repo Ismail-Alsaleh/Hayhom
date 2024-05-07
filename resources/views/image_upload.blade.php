@@ -1,6 +1,12 @@
 @extends('layouts.layout')
 @section('title','Image_Upload')
 @section('content')
+<style>
+    .bootstrap-tagsinput{
+        text-align:start !important;
+    }
+</style>
+<link rel="stylesheet" href="{{asset('css/tagsinput.css')}}">
         <div class="container-floid d-flex align-items-center justify-content-center m-0" style="height: 83vh;">
             <div id="imagePart" class="w-50 text-center shadow align-items-center" style="">
                 <div class="bg-light-red pt-3 m-0"></div>
@@ -20,6 +26,10 @@
                         </div>
                         <div class="">
                             <input type="file" class="filepond"  id="image" name="image" required accept="image/png , image/jpeg">                            
+                        </div>
+                        <div class="">
+                            <label for="tags">{{__('image_upload.insert_tags')}}</label>
+                        <input type="text" data-role="tagsinput"  id="tags" name="tags">
                         </div>
 
                     </div>
@@ -45,5 +55,7 @@
     <script src="{{ asset('js/filepond/filepond.js') }}"></script>
     <script src="{{ asset('js/filepond/filepond-plugin-file-validate-type.js')}}"></script>
     <script src="{{ asset('js/filepond/filepond-plugin-file-validate-size.js')}}"></script>
+    <script src="{{asset('js/tagsinput.js')}}"></script>
     <script src="{{asset('js/image_upload.js')}}"></script>
+
 @endpush

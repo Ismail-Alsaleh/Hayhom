@@ -1,8 +1,8 @@
 .bg-light-red{
-    background: linear-gradient(15deg, rgb(255, 160, 160) 0%, rgb(253, 139, 131) 15%, rgb(187, 33, 33) 80%, rgb(155, 19, 19) 100%);
+    background: #a00505;
 }
 .bg-dark-red{
-    background: linear-gradient(15deg, rgba(255, 81, 81, 0.993) 0%, rgb(207, 35, 23) 15%, rgb(185, 15, 15) 80%, rgb(153, 0, 0) 100%);
+    background: #a00505;
 }
 .ltr{
     direction: ltr;

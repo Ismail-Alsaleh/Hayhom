@@ -6,7 +6,7 @@ const pond = FilePond.create(inputElement, {
     // acceptedFileTypes: ['image/png','image/jpeg'],
     allowMultiple: false,
     required:true,
-    maxFileSize: '20MB'
+    maxFileSize: '2MB'
 });
 
 var validationMessages = {
@@ -44,23 +44,15 @@ $(function(){
         submitHandler: function(){
             document.querySelector('.imageErr').textContent= '';
             let myUrl= $('#imageForm').attr('action');
-            // var imageForm = document.getElementById('imageForm');
-            // var myData = new FormData(imageForm);
-
-            // Get the file objects uploaded via FilePond
-
-
             const myData = new FormData();
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             myData.append('_token', csrfToken);
-            // Append the file objects to the FormData object
             const files = pond.getFiles();     
             const filesArray = Array.from(files);
-
-            // Now you can use forEach on filesArray
             filesArray.forEach(function(file) {
                 myData.append('image', file.file);
             });
+            myData.append('tags', $('#tags').tagsinput('items'));
             myData.append('title', document.getElementById('title').value);
 
             console.log('FormData:', myData);
@@ -68,6 +60,7 @@ $(function(){
                 url: myUrl,
                 processData: false,
                 contentType: false,
+                traditional: true,
                 type: "POST",
                 data: myData,
                 dataType:"JSON",
