@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateImageRequest;
 use App\Models\UploadImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 
@@ -13,7 +14,7 @@ class UploadImageController extends Controller
     public function uploadImage(Request $request){
         try{
             if($request->hasFile('image')){
-
+                Log::channel('custom')->info('This message will be logged in custom.log');
                 $path = $request->file('image')->store('temp');
                 $file = $request->file('image');
 
