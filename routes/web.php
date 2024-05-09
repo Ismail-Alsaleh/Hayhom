@@ -26,8 +26,10 @@ Route::get('/image', function(){
     return view('image_upload');
 });
 Route::post('/image',[UploadImageController::class, 'uploadImage'])->name('uploadImage');
+Route::post('/gallery',[UploadImageController::class, 'sortImages'])->name('sort');
 Route::get('/gallery', [UploadImageController::class, 'showImages'])->name('showImages');
 Route::get('/gallery/{id}', [UploadImageController::class, 'imageDetails'])->name('image-details');
+
 Route::middleware([Localization::class])->group(function () {
     Route::get('/language/{locale}', [LanguageController::class, 'switchLocale'])->name('lang.switch');
 });

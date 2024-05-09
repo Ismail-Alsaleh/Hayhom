@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class CreateImageRequest extends FormRequest
 {
@@ -25,7 +27,19 @@ class CreateImageRequest extends FormRequest
     {
         return [
             'title' => 'required', 
-            'image' => 'required'
+            'image' => 'required',
+            'tags' => 'required'
         ];
+    }
+
+    public function failedValidation(Validator $validator)
+    {
+        $var ='';
+        for( $i=0;$i<count($validator->errors());$i++){
+            $var = $validator->errors()->first();
+            break; 
+        }
+        throw new HttpResponseException(response()->json(
+            ['errors'   =>  $validator->errors()]));
     }
 }
