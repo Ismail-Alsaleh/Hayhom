@@ -96,5 +96,23 @@ class UploadImageController extends Controller
         
         // return response()->json(['success' => "Successfully retrieved data", 'images' => $images]);
     }
+// // Step 1: Initial Image Caching
+// $images = YourModel::all(); // Retrieve all images from the database
 
-}
+// // Serialize and save the images to a file or directory
+// file_put_contents(storage_path('app/images_cache'), serialize($images));
+
+// // Step 2: Querying from Cached Images
+// // Retrieve cached images from the file or directory
+// $cachedImages = unserialize(file_get_contents(storage_path('app/images_cache')));
+
+// // Apply query conditions (e.g., filter, sort) to the cached images
+// // For example, you can use Laravel collection methods like filter, sortBy, etc.
+// $queryResults = $cachedImages->filter(function ($image) {
+//     // Apply your query conditions here
+//     return $image->someAttribute === 'someValue';
+// });
+
+// // Return the filtered/sorted images as per the query
+// return $queryResults;
+// }
