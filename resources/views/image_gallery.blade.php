@@ -62,7 +62,7 @@
           
                 </div>
                 <div class="pagination-container">
-                    {{ $images->links() }}    
+
                 </div>
     
         </div>
@@ -92,23 +92,27 @@ function findFilterAttr(){
 }
 function updatePage(response){
     var html = '<div class="row w-100 gallery-container">';
-    response.images.forEach(function(image) {
+    Object.keys(response.images).forEach(key => {
+    console.log(`Image Title: ${response.images[key].title}`);
+});
+    for (let key in response.images) {
+        console.log(`Image Title: ${response.images[key].title}`);
         html += `
             <article class="main-div col-lg-3 my-5 ">
-                <a href="{{ route('image-details', ['id' => '']) }}/${image.id}">
+                <a href="{{ route('image-details', ['id' => '']) }}/${response.images[key].id}">
                     <div class="images h-100">
                         <div class="">
                             <div class="text-center mb-4">
-                                <p class="date">${image.created_at}</p>
-                                <h4 class="title">${image.title}</h4>
+                                <p class="date">${response.images[key].created_at}</p>
+                                <h4 class="title">${response.images[key].title}</h4>
                             </div>
                             <div class="text-center mb-4">
-                                <img class="img-fluid" src="{{ asset('images/200x200/${image.image}' ) }}" alt="Image Description">
+                                <img class="img-fluid" src="{{ asset('images/200x200/${response.images[key].image}' ) }}" alt="Image Description">
                             </div>
                         </div>
                         <div class="w-100 text-center button-div">
                             <div>`;
-        image.tags.forEach(function(tag) {
+        response.images[key].tags.forEach(function(tag) {
             html += `<span class="tag ${tag.name.en}">${tag.name.en}</span>`;
         });
         html += `</div>
@@ -117,25 +121,11 @@ function updatePage(response){
                     </div>
                 </a>
             </article>`;
-    });
+}
     html += `</div>
     <div class="pagination-container">
     </div>`;
     $('.gallery-sorter').html(html);
-    var paginationHtml = '<ul class="pagination" role="navigation"> ';
-    if (response.pagination.last_page_url) {
-        paginationHtml += '<li class="page-item"><a class="page-link" href="' + response.pagination.last_page_url + '"><</a></li>';
-    }
-    for (var i = 1; i <= response.pagination.last_page; i++) {
-        var activeClass = i === response.pagination.current_page ? 'active' : '';
-        paginationHtml += '<li class="page-item ' + activeClass + '" aria-current="page"> <a class="page-link" href="http://127.0.0.1:8000/gallery?page=' + i + '">' + i + '</a></li>';
-    }
-    if (response.pagination.next_page_url) {
-        paginationHtml += '<li class="page-item"><a class="page-link" href="' + response.pagination.next_page_url + '">></a></li>';
-    }
-    paginationHtml += '</ul>';
-
-    $('.pagination-container').html(paginationHtml);
 }
 $('#sort').on('change',function(){
     let [searchValue,greaterThan,lessThan,pageNumber] = findFilterAttr();

@@ -11,21 +11,32 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
-
 class UploadImageController extends Controller
 {
+    public function cacheImages(){
+        $images = $image = UploadImage::with('tags')->get();
+        $serializedImages = serialize($images);
+        Cache::put('images_cache', $serializedImages,60*60);
+    }
     public function uploadImage(CreateImageRequest $request){
         try{
             if($request->hasFile('image')){
-                // $path = $request->file('image')->store('temp');
+                $path = $request->file('image')->store('temp');
                 $file = $request->file('image');
                 $fileName = Str::random(2) . '_' . time() . '_' . $file->getClientOriginalName();
-                $img = Image::make($request->image);
-                $img->fit(800,800)->save(public_path('images/800x800/') . $fileName);
-                $img->fit(500,500)->save(public_path('images/500x500/') . $fileName);
-                $img->fit(200,200)->save(public_path('images/200x200/') . $fileName);
-                $img->fit(80,80)->save(public_path('images/thumbnails/') . $fileName);
-                
+                $sizes = [800, 500, 200, 80];
+                foreach ($sizes as $size) {
+                    $img = Image::make($request->image);
+                    $cachedImage = Image::cache(function ($image) use ($path,$size) {
+                        $fullPath = storage_path('app/' . $path);
+                        return $image->make($fullPath)->fit($size, $size);
+                    });
+                    if($size == 80){
+                        $img->save(public_path("images/thumbnails/") . $fileName);
+                    }else{
+                        $img->save(public_path("images/{$size}x{$size}/") . $fileName);
+                    }   
+                }
                 $tagNames = explode(',', $request->input('tags'));
                 $tags = [];
                 foreach ($tagNames as $tagName) {
@@ -36,7 +47,7 @@ class UploadImageController extends Controller
                     'image' => $fileName,
                 ]);
                 $image->attachTags($tags);
-                Cache::forget('cached_images');
+                $this->cacheImages();
                 return response()->json(['success'=> __('image_upload.upload_success')]);
             }
             else{
@@ -46,22 +57,28 @@ class UploadImageController extends Controller
             return response()->json(['errors' => $e->getMessage()]);
         }
     }
+
     public function showImages(){
-        $image = UploadImage::with('tags')->orderBy('created_at','desc')->paginate(12);
-        return view('image_gallery',['images' => $image]);
+        if (!Cache::has('images_cache')) {
+            $this->cacheImages();
+        }
+        $serializedImages = Cache::get('images_cache');
+        $images = unserialize($serializedImages);
+        $sortedImages = $images->sortByDesc('created_at');
+
+        return view('image_gallery',['images' => $sortedImages]);
     }
+
     public function imageDetails($id){
         $image = UploadImage::find($id);
         return view('image_details', ['image' => $image]);
     }
 
-    public function sortImages(Request $request){
+    public function sortImages1(Request $request){
         $pageNumber = $request->input('pageNumber');
         $sortVar = $request->input('sortVar');
         $sortWay = $request->input('sortWay');
-        // $images = UploadImage::with('tags')->orderBy($sortVar,$sortWay)->paginate(10);
 
-        // return view('gallery_container', compact('images'))->render();
         if($request->input('greaterThan')){
             $greaterThan = $request->input('greaterThan');
             $lessThan = $request->input('lessThan');
@@ -76,43 +93,53 @@ class UploadImageController extends Controller
             ->where('created_at', '>=', $greaterThan)
             ->where('created_at', '<=', $lessThan)
             ->orderBy($sortVar, $sortWay)
-            ->paginate(12);
+            ->get();
         }else{
-            $images = UploadImage::with('tags')->orderBy($sortVar,$sortWay)->forPage($pageNumber, 12)->paginate(12);
+            $images = UploadImage::with('tags')->orderBy($sortVar,$sortWay);
         }
-        Cache::put('cached_images', $images, now()->addMinutes(60));
-        
         return response()->json([
-            'images' => $images->items(),
-            'pagination' => [
-                'current_page' => $images->currentPage(),
-                'total' => $images->total(),
-                'per_page' => $images->perPage(),
-                'last_page' => $images->lastPage(),
-                'next_page_url' => $images->nextPageUrl(),
-                'prev_page_url' => $images->previousPageUrl(),
-            ]
+            'images' => $images,
         ]);
-        
-        // return response()->json(['success' => "Successfully retrieved data", 'images' => $images]);
     }
-// // Step 1: Initial Image Caching
-// $images = YourModel::all(); // Retrieve all images from the database
+    public function sortImages(Request $request){
+        if (!Cache::has('images_cache')) {
+            $this->cacheImages();
+        }
 
-// // Serialize and save the images to a file or directory
-// file_put_contents(storage_path('app/images_cache'), serialize($images));
+        $serializedImages = Cache::get('images_cache');
+        $images = unserialize($serializedImages);
 
-// // Step 2: Querying from Cached Images
-// // Retrieve cached images from the file or directory
-// $cachedImages = unserialize(file_get_contents(storage_path('app/images_cache')));
+        $sortVar = $request->input('sortVar');
+        $sortWay = $request->input('sortWay');
+        if($sortWay == 'asc'){
+            $sortedImages = $images->sortBy($sortVar,  SORT_NATURAL|SORT_FLAG_CASE);
+        }else{
+            $sortedImages = $images->sortByDesc($sortVar,  SORT_NATURAL|SORT_FLAG_CASE);
+        }
+        $sortedImagesArray = $sortedImages->values()->all();
+        $greaterThan = $request->input('greaterThan');
+        $lessThan = $request->input('lessThan');
+        $searchValue = $request->input('searchValue');
 
-// // Apply query conditions (e.g., filter, sort) to the cached images
-// // For example, you can use Laravel collection methods like filter, sortBy, etc.
-// $queryResults = $cachedImages->filter(function ($image) {
-//     // Apply your query conditions here
-//     return $image->someAttribute === 'someValue';
-// });
+        $filteredImages = [];
+        foreach ($sortedImagesArray as $image) {
+            $dateRangeMatch = $image->created_at >= $greaterThan && $image->created_at <= $lessThan;
+            if ($searchValue !== null) {
+                $titleMatches = strpos($image->title, $searchValue) !== false;
+                $tagsMatch = $image->tags->every(function ($tag) use ($searchValue) {
+                    return stripos($tag->name, $searchValue) !== false;
+                });
+                if (($tagsMatch || $titleMatches) && $dateRangeMatch) {
+                    $filteredImages[] = $image;
+                }
+            } elseif ($dateRangeMatch) {
+                $filteredImages[] = $image;
+            }
+        }
+        return response()->json([
+            'images' => array_values($filteredImages),
+        ]);
 
-// // Return the filtered/sorted images as per the query
-// return $queryResults;
-// }
+    }
+
+}
