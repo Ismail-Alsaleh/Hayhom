@@ -13,29 +13,41 @@ use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
 class UploadImageController extends Controller
 {
-    public function cacheImages(){
+    public function cacheImagesDB(){
         $images = $image = UploadImage::with('tags')->get();
         $serializedImages = serialize($images);
         Cache::put('images_cache', $serializedImages,60*60);
     }
+    public function cacheSizedImage($size ,$imageName)
+    {
+        if($size == 80){
+            $originalImagePath = public_path("img/thumbnails/" . $imageName);
+        }else{
+            $originalImagePath = public_path("img/{$size}x{$size}/" . $imageName);
+        }
+        $cachedImage = Image::cache(function ($image) use ($originalImagePath) {
+            return $image->make($originalImagePath)->greyscale();
+        }, 60,true);
+        return $cachedImage;
+    }
     public function uploadImage(CreateImageRequest $request){
         try{
             if($request->hasFile('image')){
-                $path = $request->file('image')->store('temp');
+                // $path = $request->file('image')->store('temp');
                 $file = $request->file('image');
                 $fileName = Str::random(2) . '_' . time() . '_' . $file->getClientOriginalName();
                 $sizes = [800, 500, 200, 80];
                 foreach ($sizes as $size) {
-                    $img = Image::make($request->image);
-                    $cachedImage = Image::cache(function ($image) use ($path,$size) {
-                        $fullPath = storage_path('app/' . $path);
-                        return $image->make($fullPath)->fit($size, $size);
-                    });
+                    $img = Image::make($request->image)->fit($size, $size);
                     if($size == 80){
-                        $img->save(public_path("images/thumbnails/") . $fileName);
+                        $img->save(public_path("img/thumbnails/") . $fileName);
+                        $path = "img/thumbnails/" . $fileName;
                     }else{
-                        $img->save(public_path("images/{$size}x{$size}/") . $fileName);
+                        $img->save(public_path("img/{$size}x{$size}/") . $fileName);
+                        $path = "img/{$size}x{$size}/" . $fileName;
                     }   
+                    $cachedImage = $this->cacheSizedImage($size,$fileName);
+
                 }
                 $tagNames = explode(',', $request->input('tags'));
                 $tags = [];
@@ -47,7 +59,7 @@ class UploadImageController extends Controller
                     'image' => $fileName,
                 ]);
                 $image->attachTags($tags);
-                $this->cacheImages();
+                $this->cacheImagesDB();
                 return response()->json(['success'=> __('image_upload.upload_success')]);
             }
             else{
@@ -60,7 +72,7 @@ class UploadImageController extends Controller
 
     public function showImages(){
         if (!Cache::has('images_cache')) {
-            $this->cacheImages();
+            $this->cacheImagesDB();
         }
         $serializedImages = Cache::get('images_cache');
         $images = unserialize($serializedImages);
@@ -103,7 +115,7 @@ class UploadImageController extends Controller
     }
     public function sortImages(Request $request){
         if (!Cache::has('images_cache')) {
-            $this->cacheImages();
+            $this->cacheImagesDB();
         }
 
         $serializedImages = Cache::get('images_cache');
