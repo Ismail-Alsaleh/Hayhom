@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="{{asset('css/galary.css')}}">
 <style>
     .tag {
-
     display: inline-block;
     padding: 2px 6px;
     background-color: #f0f0f0;
@@ -27,13 +26,11 @@
             <input type="date" id="lessThan">
             <input id="titleOrTagSearch" type="text" placeholder="{{ __('gallery.insert_tag_title') }}" style="margin-left:auto;">
             <a id="sortLink" href="{{route('sort')}}"></a>
-
         </div>
         <hr>
         <div class="row gallery-sorter">
                 <div class="row w-100 gallery-container">
                     @foreach ($images as $image)
-
                     <article class="main-div col-lg-3 my-5 ">
                     <a href="{{ route('image-details',['id' => $image->id]) }}">
                         <div class="images h-100">
@@ -43,7 +40,7 @@
                                 <h4 class="title">{{$image['title']}}</h4>
                             </div>
                             <div class="text-center mb-4">
-                                <img class="img-fluid" src="{{ asset('images/200x200/' . $image['image']) }}" alt="Image Description">
+                                <img class="img-fluid" src="{{ route('imageCache', ['template' => '200x200', 'fileName' => $image['image']]) }}" alt="Image Description{{$image['image']}}">
                             </div>
                         </div>
                         <div class="w-100 text-center button-div">
@@ -57,22 +54,15 @@
                         </div>
                         </a>
                     </article>
-
                     @endforeach
-          
                 </div>
                 <div class="pagination-container">
-
                 </div>
-    
         </div>
     </div>
 </section>
-
 @endsection
-
 @push('js_file')
-
 <script>
 function findFilterAttr(){
     let searchValue = $('#titleOrTagSearch').val().toLowerCase();
@@ -96,6 +86,8 @@ function updatePage(response){
     console.log(`Image Title: ${response.images[key].title}`);
 });
     for (let key in response.images) {
+        let imageUrl = "{{ route('imageCache', ['template' => '200x200', 'fileName' => ':fileName']) }}";
+        imageUrl = imageUrl.replace(':fileName', response.images[key].image);
         console.log(`Image Title: ${response.images[key].title}`);
         html += `
             <article class="main-div col-lg-3 my-5 ">
@@ -107,7 +99,7 @@ function updatePage(response){
                                 <h4 class="title">${response.images[key].title}</h4>
                             </div>
                             <div class="text-center mb-4">
-                                <img class="img-fluid" src="{{ asset('images/200x200/${response.images[key].image}' ) }}" alt="Image Description">
+                                <img class="img-fluid" src="${imageUrl}" alt="Image Description">
                             </div>
                         </div>
                         <div class="w-100 text-center button-div">
@@ -133,5 +125,4 @@ $('#sort').on('change',function(){
 });
 </script>
 <script src="{{asset('js/gallery.js')}}"></script>
-
 @endpush

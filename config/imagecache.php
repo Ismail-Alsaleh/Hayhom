@@ -33,10 +33,7 @@ return [
     'paths' => [
         public_path('upload'),
         public_path('images'),
-        public_path('images/800x800'),
-        public_path('images/500x500'),
-        public_path('images/200x200'),
-        public_path('images/thumbnails'),
+        public_path('images/images_gallery'),
     ],
 
     /*
@@ -59,6 +56,10 @@ return [
         'small' => 'Intervention\Image\Templates\Small',
         'medium' => 'Intervention\Image\Templates\Medium',
         'large' => 'Intervention\Image\Templates\Large',
+        'thumbnails' => 'Intervention\Image\Templates\Thumbnails',
+        '200x200' => 'Intervention\Image\Templates\TwoHundred',
+        '500x500' => 'Intervention\Image\Templates\FiveHundred',
+        '800x800' => 'Intervention\Image\Templates\EightHundred',
     ],
 
     /*

@@ -42,19 +42,19 @@
 </div>
 <ul id="thumbnails" class="thumbnails">
   <li class="thumbnail">
-    <img src="{{asset('images/thumbnails/' . $image['image']) }}" alt="">
+    <img src="{{ route('imageCache', ['template' => 'thumbnails', 'fileName' => $image['image']]) }}" alt="">
     <img class="low-opacity" src="https://fakeimg.pl/80x80/ffffff/909090?text=800x800" alt="">
   </li>
   <li class="thumbnail">
-    <img src="{{asset('images/thumbnails/' . $image['image']) }}" alt="">
+    <img src="{{ route('imageCache', ['template' => 'thumbnails', 'fileName' => $image['image']]) }}" alt="">
     <img class="low-opacity" src="https://fakeimg.pl/80x80/ffffff/909090?text=500x500" alt="">
   </li>
   <li class="thumbnail">
-    <img src="{{asset('images/thumbnails/' . $image['image']) }}" alt="">
+    <img src="{{ route('imageCache', ['template' => 'thumbnails', 'fileName' => $image['image']]) }}" alt="">
     <img class="low-opacity" src="https://fakeimg.pl/80x80/ffffff/909090?text=200x200" alt="">
   </li>
   <li class="thumbnail">
-    <img src="{{asset('images/thumbnails/' . $image['image']) }}" alt="">
+    <img src="{{ route('imageCache', ['template' => 'thumbnails', 'fileName' => $image['image']]) }}" alt="">
     <img class="low-opacity" src="https://fakeimg.pl/80x80/ffffff/909090?text=80x80" alt="">
   </li>
 </ul>
@@ -62,10 +62,11 @@
 <div class="splide my-3" role="group" aria-label="Splide Basic HTML Example">
   <div class="splide__track">
 		<ul class="splide__list text-center">
-			<li class="splide__slide"><img src="{{asset('images/800x800/' . $image['image']) }}" alt=""></li>
-			<li class="splide__slide"><img src="{{asset('images/500x500/' . $image['image']) }}" alt=""></li>
-			<li class="splide__slide"><img src="{{ asset('images/200x200/' . $image['image']) }}" alt=""></li>
-            <li class="splide__slide"><img src="{{asset('images/thumbnails/' . $image['image']) }}" alt=""></li>
+			<li class="splide__slide"><img src="{{ route('imageCache', ['template' => '800x800', 'fileName' => $image['image']]) }}" alt=""></li>
+			<li class="splide__slide"><img src="{{ route('imageCache', ['template' => '500x500', 'fileName' => $image['image']]) }}" alt=""></li>
+            <li class="splide__slide"><img src="{{ route('imageCache', ['template' => '200x200', 'fileName' => $image['image']]) }}" alt=""></li>
+            <li class="splide__slide"><img src="{{ route('imageCache', ['template' => 'thumbnails', 'fileName' => $image['image']]) }}" alt=""></li>
+            
 		</ul>
   </div>
 </div>
