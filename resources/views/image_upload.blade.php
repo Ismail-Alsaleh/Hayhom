@@ -5,7 +5,7 @@
     .bootstrap-tagsinput{
         text-align:start !important;
     }
-</style>
+</style> 
 <link rel="stylesheet" href="{{asset('css/tagsinput.css')}}">
         <div class="container-floid d-flex align-items-center justify-content-center m-0" style="height: 83vh;">
             <div id="imagePart" class="w-50 text-center shadow align-items-center" style="">
@@ -22,6 +22,9 @@
                             <input type="text" class="text-center py-2 w-100 border-0" name="title" id="title" placeholder="{{__('messages.insert')}} {{__('messages.title')}}">
                         </div>
                         <div class="">
+                            <p class="imageErr text-danger"></p>
+                        </div>
+                        <div class="">
                             <label for="image">{{ __('messages.image') }}</label>
                         </div>
                         <div class="">
@@ -29,13 +32,13 @@
                         </div>
                         <div class="">
                             <label for="tags">{{__('image_upload.insert_tags')}}</label>
-                        <input type="text" data-role="tagsinput"  id="tags" name="tags">
+                        <input type="text" data-role="tagsinput"  id="tags" name="tags" placeholder="{{__('gallery.tag-rules')}}">
                         </div>
 
                     </div>
                     <div class="">
-                        <p class="imageErr text-danger"></p>
-                        <p class="imageCountry text-success"></p>                        
+                        <p class="tagErr text-danger"> </p>
+                        <p class="imageCountry text-success"></p>
                     </div>
 
                     <!-- <h5 id="phoneValidate" style="color: red;"> **phone is not correct </h5>  -->

@@ -71,7 +71,12 @@ $(function(){
 
                         $.each(response.errors, function(field, errors) {
                             $.each(errors, function(index, error) {
-                                document.querySelector('.imageErr').textContent= error;
+                                if(error.includes('tag')){
+                                    document.querySelector('.tagErr').textContent= error;
+                                }
+                                else{
+                                    document.querySelector('.imageErr').textContent= error;
+                                }
                                 errorMsg += error + '<br>';
                             });
     
@@ -86,6 +91,10 @@ $(function(){
                             message: response.success,
                             position: 'topRight'
                         });
+                        html = `<div id="imagePart" class="w-50 text-center shadow align-items-center">
+                                    <h1 class="text-success">Image Added Successfully</h1>
+                                </div>`;
+                        $('.container-floid').html(html);
                     }  
                 },
                 // error: function(err) {

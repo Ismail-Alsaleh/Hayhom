@@ -30,8 +30,9 @@ class UploadImageController extends Controller
                 foreach ($tagNames as $tagName) {
                     $tags[] = Tag::findOrCreate($tagName);
                 }
+                $cleanTitle = strip_tags(html_entity_decode($request->title));
                 $image = UploadImage::create([
-                    'title' => $request->input('title'),
+                    'title' => $cleanTitle,
                     'image' => $fileName,
                 ]);
                 $image->attachTags($tags);
@@ -87,8 +88,8 @@ class UploadImageController extends Controller
         foreach ($sortedImagesArray as $image) {
             $dateRangeMatch = $image->created_at >= $greaterThan && $image->created_at <= $lessThan;
             if ($searchValue !== null) {
-                $titleMatches = strpos($image->title, $searchValue) !== false;
-                $tagsMatch = $image->tags->every(function ($tag) use ($searchValue) {
+                $titleMatches = stripos($image->title, $searchValue) !== false;
+                $tagsMatch = $image->tags->contains(function ($tag) use ($searchValue) {
                     return stripos($tag->name, $searchValue) !== false;
                 });
                 if (($tagsMatch || $titleMatches) && $dateRangeMatch) {

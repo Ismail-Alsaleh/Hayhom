@@ -2,29 +2,46 @@
 @section('title','image_gallery')
 @section('content')
 <link rel="stylesheet" href="{{asset('css/galary.css')}}">
-<style>
-    .tag {
-    display: inline-block;
-    padding: 2px 6px;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    margin: 4px;
-}
-</style>
-<section class="">
+
+<section style="min-height: 45rem;">
     <div class="container mt-4 ">
         <div class="text-center w-100">
-            <h1>Gallery</h1>
-            <select name="sort" id="sort">
-                <option value="date_desc">date descending</option>
-                <option value="date_asc">date ascending</option>
-                <option value="title_desc">title descending</option>
-                <option value="title_asc">title ascending</option>
-            </select>
-            <input type="date" id="greaterThan">
-            <label for="date">between</label>
-            <input type="date" id="lessThan">
-            <input id="titleOrTagSearch" type="text" placeholder="{{ __('gallery.insert_tag_title') }}" style="margin-left:auto;">
+            <h1>{{ __('image_upload.gallery') }}</h1>
+        </div>
+        <hr>
+        <div class="d-flex filter-form">
+            <div class="input-group mx-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" ><i class="bi bi-sort-down-alt"></i></span>
+                </div>
+                <select name="sort" id="sort" class="form-control" >
+                    <option value="date_desc">{{ __('messages.date') . ' ' . __('messages.descending') }}</option>
+                    <option value="date_asc">{{ __('messages.date') . ' ' . __('messages.ascending') }}</option>
+                    <option value="title_desc">{{ __('messages.title') . ' ' . __('messages.descending') }}</option>
+                    <option value="title_asc">{{ __('messages.title') . ' ' . __('messages.ascending') }}</option>
+                </select>
+            </div>
+
+            <div class="input-group mx-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" >{{ __('messages.from') }}</span>
+                </div>
+                <input type="date" id="greaterThan" class="form-control">
+            </div>
+
+            <div class="input-group mx-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">{{ __('messages.to') }}</span>
+                </div>
+                <input type="date" id="lessThan" class="form-control">
+            </div>
+
+            <div class="input-group mx-2">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                </div>
+                <input id="titleOrTagSearch" type="text" class="form-control" placeholder="{{ __('gallery.insert_tag_title') }}" style="margin-left:auto;">
+            </div>
             <a id="sortLink" href="{{route('sort')}}"></a>
         </div>
         <hr>

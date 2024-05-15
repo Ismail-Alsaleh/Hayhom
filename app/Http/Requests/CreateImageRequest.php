@@ -26,11 +26,17 @@ class CreateImageRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required', 
+            'title' => 'required|max:50|not_regex:/[^<]*<[^>]*>/', 
             'image' => 'required',
             'tags' => 'required'
         ];
     }
+    // protected function prepareForValidation()
+    // {
+    //     $this->merge([
+    //         'title' => strip_tags(html_entity_decode($this->title)),
+    //     ]);
+    // }
 
     public function failedValidation(Validator $validator)
     {

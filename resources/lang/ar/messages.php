@@ -10,5 +10,11 @@ return [
     'language' =>           'English',
     'image' =>              'الصورة',
     'upload'=>              'ارفع',
+    'from' =>               'منذ',
+    'to' =>                 'حتى',
+    'date'=>                'التاريخ',
+    'ascending' =>          'تصاعدي',
+    'descending' =>         'تنازلي',
+    
 
 ];
