@@ -177,6 +177,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Propaganistas\LaravelPhone\PhoneServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Spatie\ResponseCache\ResponseCacheServiceProvider::class,
 
 
         /*

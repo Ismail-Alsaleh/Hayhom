@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageManagerStatic;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
+
 
 
 
@@ -32,11 +34,11 @@ Route::get('/', [PhoneController::class, 'index'])->name('name');
 Route::post('/',[PhoneController::class, 'store'])->name('store');
 Route::get('/image', function(){
     return view('image_upload');
-});
-Route::post('/image',[UploadImageController::class, 'uploadImage'])->name('uploadImage');
-Route::post('/gallery',[UploadImageController::class, 'sortImages'])->name('sort');
-Route::get('/gallery', [UploadImageController::class, 'showImages'])->name('showImages');
-Route::get('/gallery/{id}', [UploadImageController::class, 'imageDetails'])->name('image-details');
+})->middleware(CacheResponse::class);
+Route::post('/image',[UploadImageController::class, 'uploadImage'])->name('uploadImage')->middleware(CacheResponse::class);
+Route::post('/gallery',[UploadImageController::class, 'sortImages'])->name('sort')->middleware(CacheResponse::class);
+Route::get('/gallery', [UploadImageController::class, 'showImages'])->name('showImages')->middleware(CacheResponse::class);
+Route::get('/gallery/{id}', [UploadImageController::class, 'imageDetails'])->name('image-details')->middleware(CacheResponse::class);
 
 Route::middleware([Localization::class])->group(function () {
     Route::get('/language/{locale}', [LanguageController::class, 'switchLocale'])->name('lang.switch');

@@ -1,11 +1,11 @@
 
-$('.page-item').on('click', function(event) {
-    event.preventDefault();
-    var page = $(this).find('.page-link').text();
-    console.log(page);
-    let [searchValue,greaterThan,lessThan,pageNumber] = findFilterAttr();
-    applyfilters(searchValue,greaterThan,lessThan,page);
-});
+// $('.page-item').on('click', function(event) {
+//     event.preventDefault();
+//     var page = $(this).find('.page-link').text();
+//     console.log(page);
+//     let [searchValue,greaterThan,lessThan,pageNumber] = findFilterAttr();
+//     applyfilters(searchValue,greaterThan,lessThan,page);
+// });
 // Event listener for pagination links
 // $(document).on('click', '.pagination a', function(e) {
 //     e.preventDefault();

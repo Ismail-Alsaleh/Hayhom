@@ -91,18 +91,11 @@ function findFilterAttr(){
     if(lessThan == ''){
         lessThan = undefined;
     }
-    let pageNumber = $('.page-item.active').first().find('.page-link').text();
-    
-
-    console.log(pageNumber)
-    return [searchValue, greaterThan, lessThan, pageNumber];
+    return [searchValue, greaterThan, lessThan, 1];
 }
 function updatePage(response){
     var html = '<div class="row w-100 gallery-container">';
-    Object.keys(response.images).forEach(key => {
-    console.log(`Image Title: ${response.images[key].title}`);
-});
-    for (let key in response.images) {
+    response.images.data.foreach(function(image){
         let imageUrl = "{{ route('imageCache', ['template' => '200x200', 'fileName' => ':fileName']) }}";
         imageUrl = imageUrl.replace(':fileName', response.images[key].image);
         console.log(`Image Title: ${response.images[key].title}`);
@@ -130,7 +123,7 @@ function updatePage(response){
                     </div>
                 </a>
             </article>`;
-}
+})
     html += `</div>
     <div class="pagination-container">
     </div>`;
